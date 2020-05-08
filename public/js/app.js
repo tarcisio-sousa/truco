@@ -5,9 +5,7 @@ let btnGiveCards = document.querySelector('a#btnGiveCards');
 let bntClearTableBoard = document.querySelector('a#bntClearTableBoard');
 let socket = io('http://localhost:3000');
 
-let getMessages = (messages) => {
-    console.log(messages);
-}
+let getMessages = messages => console.log(messages);
 
 let enterPlayer = () => {
     let elemNamePlayer = document.querySelector('input#namePlayer')
@@ -22,7 +20,6 @@ let renderPlayer = player => {
     let playerElement = document.querySelector(`span#player`);
     playerElement.innerHTML = player['name'];
     playerElement.dataset.player = player['id'];
-
 
     if (player['hand']) { 
         let hand = [];
@@ -39,20 +36,15 @@ let renderPlayer = player => {
     }
 };
 
-let renderPlayerParticipant = player => {
-    let positionPlayers = [0, 1, 2, 3];
-    positionPlayers.filter(key => {
-        
-        return key != player.id
-    });
-    let playerElement = document.querySelector(`span#player${3 - player['id']}`);
+let renderPlayerParticipant = (player, position) => {
+    let index = positionTableBoard.indexOf(position);
+    let playerElement = document.querySelector(`span#position${index}`);
     playerElement.innerHTML = player['name'];
     playerElement.dataset.player = player['id'];
     if (player['hand']) { 
         let hand = [];
         player['hand'].map(() => hand.push(`[&#9744]`));
-        // let participant = document.getElementById(`player${3 - player['id']}`)
-        document.querySelector(`div#hand${3 - player['id']}`).innerHTML = hand;
+        document.querySelector(`div#hand${index}`).innerHTML = hand;
     }
 };
 
@@ -67,23 +59,23 @@ bntClearTableBoard.onclick = () => {
 
 let putCardOnTableBoard = (card, turned) => socket.emit('putCardOnTableBoard', card.dataset, turned);
 
-// socket.on('previousPlayers', players => {
-//     players.map(player => renderPlayer(player));
-// });
-
 socket.on('previousTableBoard', tableBoard => renderTableBoard(tableBoard));
 
 let getPlayerElementId = () => document.querySelector(`span#player`).dataset.player;
 
-socket.on('receivedPlayer', player => {
+socket.on('receivedPlayer', (player, position) => {
     if (typeof getPlayerElementId() === 'undefined' || getPlayerElementId() == player.id) {
         renderPlayer(player);
     } else {
-        renderPlayerParticipant(player);
+        renderPlayerParticipant(player, position);
     }
 });
 
 socket.on('receivedTableBoard', tableBoard => renderTableBoard(tableBoard));
+
+socket.on('receivedPositionTableBoard', positions => {
+    positionTableBoard = positions;
+});
 
 socket.on('messages', messages => getMessages(messages));
 

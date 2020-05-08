@@ -24,6 +24,12 @@ let cards = [];
 let players = [];
 let team = [];
 let tableBoard = [];
+let positionPlayers = [
+    [0, 1, 2, 3],
+    [1, 2, 3, 0],
+    [2, 3, 0, 1],
+    [3, 0, 1, 2]
+]
 
 let resetCards = () => {
     cards = [];
@@ -49,7 +55,8 @@ let giveCards = () => {
             player['hand'].push(cards.pop());
             count++;
         }
-        io.emit('receivedPlayer', player);
+        let position = getPositionPlayer(player);
+        io.emit('receivedPlayer', player, position);
     });
     tableBoard = [];
     io.emit('receivedTableBoard', tableBoard);
@@ -85,6 +92,16 @@ let limitPlayers = () => {
     return false;
 }
 
+// Get the position on Player is added
+let getPositionPlayer = player => {
+    if (!players.length) return 0;
+    let position = 0;
+    players.map((_player, _position) => {
+        if (_player['id'] === player['id']) position = _position;
+    });
+    return position;
+}
+
 let setPlayer = player => {
     player['id'] = players.length;
     players.push(player);
@@ -102,6 +119,7 @@ io.on('connection', socket => {
         player = setPlayer(player);
         io.emit('receivedTableBoard', tableBoard);
         socket.emit('receivedPlayer', player);
+        socket.emit('receivedPositionTableBoard', positionPlayers[getPositionPlayer(player)]);
     });
 
     socket.on('giveCards', () => {
