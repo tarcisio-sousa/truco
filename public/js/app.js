@@ -1,3 +1,4 @@
+'use strict';
 
 let btnEnter = document.querySelector('button#btnEnter');
 let namePlayer = document.querySelector('input#namePlayer');
