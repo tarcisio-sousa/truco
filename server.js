@@ -137,7 +137,8 @@ io.on('connection', socket => {
         player = removeCardOfHandPlayer(cardPlayer);
         addCardOnTableBoard(player.card, turned);
         io.emit('receivedTableBoard', tableBoard);
-        io.emit('receivedPlayer', player.player);
+        let position = getPositionPlayer(player.player);
+        io.emit('receivedPlayer', player.player, position);
     });
     
     socket.emit('previousPlayers', players);
