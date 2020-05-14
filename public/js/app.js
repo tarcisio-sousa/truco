@@ -3,7 +3,8 @@ let btnEnter = document.querySelector('button#btnEnter');
 let namePlayer = document.querySelector('input#namePlayer');
 let btnGiveCards = document.querySelector('a#btnGiveCards');
 let bntClearTableBoard = document.querySelector('a#bntClearTableBoard');
-let socket = io('http://localhost:3000');
+let socket = io();
+// let socket = io('https://localhost:3000');
 
 let getMessages = messages => console.log(messages);
 
