@@ -60,7 +60,9 @@ bntClearTableBoard.onclick = () => {
     socket.emit('clearTableBoard');
 }
 
-let putCardOnTableBoard = (card, turned) => socket.emit('putCardOnTableBoard', card.dataset, turned);
+let putCardOnTableBoard = (card, turned) => {
+    socket.emit('putCardOnTableBoard', card.dataset, turned);
+}
 
 socket.on('previousTableBoard', tableBoard => renderTableBoard(tableBoard));
 

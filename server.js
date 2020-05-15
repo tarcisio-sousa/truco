@@ -143,6 +143,7 @@ io.on('connection', socket => {
     });
     
     socket.on('putCardOnTableBoard', (cardPlayer, turned = false) => {
+        console.log(cardPlayer, turned);
         player = removeCardOfHandPlayer(cardPlayer);
         addCardOnTableBoard(player.card, turned);
         io.emit('receivedTableBoard', tableBoard);
