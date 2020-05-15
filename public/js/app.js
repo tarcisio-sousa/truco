@@ -1,6 +1,6 @@
 'use strict';
 
-const positionTableBoard = [];
+let positionTableBoard = [];
 let btnEnter = document.querySelector('button#btnEnter');
 let namePlayer = document.querySelector('input#namePlayer');
 let btnGiveCards = document.querySelector('a#btnGiveCards');
