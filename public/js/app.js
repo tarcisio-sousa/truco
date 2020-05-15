@@ -61,6 +61,7 @@ bntClearTableBoard.onclick = () => {
 }
 
 let putCardOnTableBoard = (card, turned) => {
+    console.log(card);
     socket.emit('putCardOnTableBoard', card.dataset, turned);
 }
 
